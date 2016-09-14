@@ -1,0 +1,36 @@
+public class Solution {
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> list = new ArrayList<List<Integer>>();
+        Arrays.sort(nums);
+        list=twoSum(nums);
+        return list;
+    }
+    
+     public List<List<Integer>> twoSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        for(int s = 0; s < nums.length; s++){
+            for(int i = s+1; i < nums.length; i++){
+                for(int j = i + 1; j < nums.length;j++){
+                    if(nums[i] + nums[j] == -nums[s]){
+                        List<Integer> lr = new ArrayList<Integer>();
+                        lr.add(nums[s]);
+                        lr.add(nums[i]);
+                        lr.add(nums[j]);
+                        result.add(lr);
+                    }
+                    while(j < nums.length - 1 && nums[j] == nums[j+1]){//avoid duplicate
+                        j++;
+                    }
+                }
+                while(i < nums.length - 1 && nums[i] == nums[i+1]){//avoid duplicate
+                        i++;
+                }
+            }
+            while(s < nums.length - 2 && nums[s] == nums[s+1]){//avoid duplicate
+                s++;
+            }
+        }
+
+        return result;
+    }
+}
