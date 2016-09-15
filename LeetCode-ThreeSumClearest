@@ -1,0 +1,72 @@
+1、First ways
+//this way is easy,the time complexity is O(n*n*n) and throws TLE
+public class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        int minResult = Integer.MAX_VALUE;
+        int rResult = 0;
+        for(int i = 0; i < nums.length - 2; i++){
+            for(int j = i + 1; j < nums.length; j++){
+                for(int k = nums.length - 1; k > j; k--){
+                    int result = nums[i] + nums[j] + nums[k] - target;
+                    int absResult = Math.abs(result);
+                    if(absResult < minResult){
+                        minResult = absResult;
+                        rResult = nums[i] + nums[j] + nums[k];
+                    }
+                    while(k-1 >= j && nums[k] == nums[k-1]){
+                        k--;
+                    }
+                }
+                while(j < nums.length - 1 && nums[j] == nums[j+1]){
+                    j++;
+                }
+            }
+            while(i < nums.length - 2 && nums[i] == nums[i+1]){
+                i++;
+            }
+        }
+        return rResult;
+    }
+}
+
+
+//Accept   Runtime 8ms  Time Complexity is O(nlgn)
+public class Solution {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        if(nums[0] + nums[1] + nums[2] >= target) return nums[0] + nums[1] + nums[2];
+        if(nums[n-3] + nums[n-2] + nums[n-1] <= target) return nums[n-3] + nums[n-2] + nums[n-1];
+        int left = 0;
+        int right = n - 1;   
+        int sum = Integer.MAX_VALUE;
+        while(left <= right - 2){
+            int l = left + 1;
+            int r = right - 1;
+            int index = (l + r) / 2;
+            int minSum = Integer.MAX_VALUE;
+            while(l <= r){
+                int m = (l + r) / 2;
+                int temp = nums[left] + nums[right] + nums[m];
+                if(temp == target) return target;
+                if(temp > target) r = m - 1;
+                if(temp < target) l = m + 1;
+                int curSum = temp - target;
+                if(Math.abs(curSum) < Math.abs(minSum)) {
+                    minSum = curSum;
+                }
+            }
+            if(minSum > 0){
+                right--;
+            }else{
+                left ++;
+            }
+            if(Math.abs(minSum) < Math.abs(sum)) {
+                sum = minSum;
+            }
+            
+        }
+        return sum + target;
+    }
+}
+
