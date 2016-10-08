@@ -1,7 +1,7 @@
-	 //动态规划，dp[i]表示分给每个孩子的糖果，初始化设为1，如果后一个孩子的权重大于前一个孩子，那么后一个孩子的糖果数加1
-  //如果后一个孩子的权重小于前一个孩子的权重并且前一个孩子糖果数大于1，将后一个孩子的糖果数赋于1，如果前一个孩子的糖果数为1
-  //则将该孩子的糖果数赋为1，从该孩子的前一个孩子一次向前遍历，如果前一个孩子的权重大于后一个孩子，并且前一个孩子的糖果数小于等于后一个孩子，则将
-  //前一个孩子的糖果数加1
+ //动态规划，dp[i]表示分给每个孩子的糖果，初始化设为1，如果后一个孩子的权重大于前一个孩子，那么后一个孩子的糖果数加1
+ //如果后一个孩子的权重小于前一个孩子的权重并且前一个孩子糖果数大于1，将后一个孩子的糖果数赋于1，如果前一个孩子的糖果数为1
+ //则将该孩子的糖果数赋为1，从该孩子的前一个孩子一次向前遍历，如果前一个孩子的权重大于后一个孩子，并且前一个孩子的糖果数小于等于后一个孩子，则将
+ //前一个孩子的糖果数加1
   public int candy(int[] ratings) {
 		int len = ratings.length;
 		int[] dp = new int[len];
@@ -24,6 +24,29 @@
 			}
 			else
 				dp[i] = 1;
+		}
+		int minCandy = 0;
+		for(int i = 0; i < len; i++ ){
+			minCandy += dp[i];
+		}
+		return minCandy;
+	}
+Method2：
+// 从左向右扫描，确保 从左向右较大的权重有较多的糖果，
+//从右向左扫描，确保从右向左较大的权重有较多的糖果，
+	public int candy(int[] ratings) {
+		int len = ratings.length;
+		int[] dp = new int[len];
+		for(int i = 0; i < len; i++ ){
+			dp[i] = 1;
+		}
+		for(int i = 1; i < len; i++ ){
+			if(ratings[i] > ratings[i-1])
+				dp[i] = dp[i-1]+1;			
+		}
+		for(int i = len - 1; i > 0; i-- ){
+			if(ratings[i-1] > ratings[i] && dp[i] >= dp[i-1])
+				dp[i-1] = dp[i]+1;			
 		}
 		int minCandy = 0;
 		for(int i = 0; i < len; i++ ){
