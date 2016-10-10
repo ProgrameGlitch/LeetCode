@@ -1,0 +1,51 @@
+import java.util.Scanner;
+
+public class B {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int num = sc.nextInt();
+		for(int i = 0; i < num; i ++){
+			int pNum = sc.nextInt();
+			int remain = pNum;
+			boolean flag = true;
+			int[] dp = new int[pNum];
+			for(int j = 0; j < pNum; j++){
+				dp[j] = j+1; 
+			}
+			while(remain > 3){
+				int sNum = 1;
+				if(flag){
+					for(int j = 0; j < pNum; j++){
+						if(dp[j] == 0)
+							continue;
+						if(sNum == 2){
+							dp[j] = 0;
+							sNum = 1;
+						}else
+							sNum++;
+					}
+					remain = remain % 2 == 0 ? remain / 2 : (remain+1) / 2;
+					flag = !flag;
+				}else
+				{
+					for(int j = 0; j < pNum; j++){
+						if(dp[j] == 0)
+							continue;
+						if(sNum == 3){
+							dp[j] = 0;
+							sNum = 1;
+						}else
+							sNum++;
+					}
+					remain = remain % 3 == 0 ? remain*2 / 3 : remain*2 / 3 + 1;
+					flag = !flag;
+				}
+				
+			}
+			for(int j = 0; j < pNum; j++){
+				if(dp[j] != 0)
+					System.out.print(dp[j] + " ");
+			}
+		}
+	}
+}
