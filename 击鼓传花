@@ -1,0 +1,46 @@
+
+
+import java.util.Scanner;
+/**
+ * @author Kylin
+ *击鼓传花，本题讨论的核心思想是DP
+ *状态是：dp[i][j]表示i步到j个人有多少种传法
+ *状态转移方程需要考虑到第1个人，与到第n个人这两种特殊情况。
+ *  i步到第1个人主要依赖i-1步到第一个人的左右，也就是第2个人和第n个人。
+ *  同理i步到第n个人主要依赖i-1步到第n个人的左右，也就是第1个人和第n-1个人。
+ *其他情况下就是依赖于第j个人的左右两个人，也就是j+1和j-1两个人。
+ *           if(j == 1)
+ *          	 dp[i][j] = dp[i-1][2] + dp[i-1][n];
+ *状态转移方程式：else if(j == n)
+ *				 dp[i][j] = dp[i-1][1] + dp[i-1][n-1];
+ *			 else
+ *				 dp[i][j] = dp[i-1][j-1] + dp[i-1][j+1];
+ *
+ *初始情况下：
+ *dp[0][1]0步到第1个人，也就是从第一个人开始，只有一种传法
+ *dp[1][n]1步到第n个人，只有一种传法
+ *dp[1][2]1步到第2个人，只有一种传法
+ */
+public class B {
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		int n = in.nextInt();
+		int m = in.nextInt();
+		int[][] dp = new int[m+1][n+1];
+		dp[0][1] = 1;
+		dp[1][n] = 1;
+		dp[1][2] = 1;
+		for (int i = 1; i <= m; i++) {
+			for (int j = 1; j <= n; j++) {
+				if (j == 1) {
+					dp[i][j] = dp[i - 1][n] + dp[i - 1][2];
+				} else if (j == n) {
+					dp[i][j] = dp[i - 1][1] + dp[i - 1][n - 1];
+				} else {
+					dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j + 1];
+				}
+			}
+		}
+		System.out.println(dp[m][1]);
+	}
+}
